@@ -22,7 +22,7 @@ public class CollectionManager implements Collectionable<Dragon> {
     private int anInt =1;
     public static Integer user_id_max=0;
     private String[] path=new String[100];
-    public static Integer dragon_id_max;
+    public static Integer dragon_id_max = 10000000;
     private WorkDataBase worker =new WorkDataBase();
     static{
         LocalDateTime localdatetime = LocalDateTime.now();

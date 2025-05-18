@@ -7,7 +7,6 @@ import java.util.Base64;
 
 public class PasswordUtils {
 
-    // Метод для генерации случайной соли
     public static String generateSalt() {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
@@ -15,7 +14,6 @@ public class PasswordUtils {
         return Base64.getEncoder().encodeToString(salt);
     }
 
-    // Метод для хэширования пароля с солью
     public static String hashPassword(String password, String salt) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-512");
         md.update(Base64.getDecoder().decode(salt));

@@ -54,6 +54,7 @@ public class Dragon implements Serializable {
         this. character = character;
         this.head = head;
     }
+
     public Dragon(String name,
                   Coordinates coordinates,
                   LocalDateTime creationdate,

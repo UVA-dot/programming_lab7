@@ -9,7 +9,7 @@ import static java.lang.Math.max;
 public class WorkDataBase {
     public void clearDragonTable() {
         String query = "TRUNCATE TABLE City CASCADE";
-        String resetSequenceQuery = "ALTER SEQUENCE city_id_seq RESTART WITH 1";
+        String resetSequenceQuery = "ALTER SEQUENCE dragon_id_seq RESTART WITH 1";
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement()) {
 
@@ -22,7 +22,7 @@ public class WorkDataBase {
         }
     }
     public void deleteDragonById(long id) {
-        String query = "DELETE FROM Dragon WHERE id = ?";
+        String query = "DELETE FROM Dragons WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -37,20 +37,19 @@ public class WorkDataBase {
         }
     }
     public void addDragon(Dragon  dragon){
-        String query = "INSERT INTO Dragon (name, coordinates, creationDate, age, weight, type, character, head, users_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Dragons (name, coordinates, creationDate, age, weight, type, character, head) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
-
             statement.setString(1, dragon.getName());
             statement.setString(2, dragon.getCoordinates().toString());
             statement.setTimestamp(3, java.sql.Timestamp.valueOf(dragon.getCreationDate()));
             statement.setInt(4, dragon.getAge());
-            statement.setLong(5, dragon.getWeight()); // Use setLong for bigint
+            statement.setLong(5, dragon.getWeight());
             statement.setString(6, dragon.getType().toString());
             statement.setString(7, dragon.getCharacter().toString());
             statement.setFloat(8, ((Number) dragon.getHead().getSize()).floatValue());
-            statement.setInt(9, dragon.getUser_id()); // Используйте правильный метод для получения users_id
+
 
             statement.executeUpdate();
 
@@ -63,7 +62,7 @@ public class WorkDataBase {
         }
     }
     public void updateDragonById(Dragon dragon) {
-        String query = "UPDATE Dragon SET name = ?, coordinates = ?, creationDate = ?, age = ?, weight = ?, type = ?, character = ?, head = ?, users_id = ? WHERE id = ?";
+        String query = "UPDATE Dragons SET name = ?, coordinates = ?, creationDate = ?, age = ?, weight = ?, type = ?, character = ?, head = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -72,12 +71,11 @@ public class WorkDataBase {
             statement.setString(2, dragon.getCoordinates().toString());
             statement.setTimestamp(3, java.sql.Timestamp.valueOf(dragon.getCreationDate()));
             statement.setInt(4, dragon.getAge());
-            statement.setLong(5, dragon.getWeight()); // Use setLong for bigint
+            statement.setLong(5, dragon.getWeight());
             statement.setString(6, dragon.getType().toString());
             statement.setString(7, dragon.getCharacter().toString());
             statement.setFloat(8, ((Number) dragon.getHead().getSize()).floatValue());
-            statement.setInt(11, dragon.getUser_id()); // Предполагаем, что у City есть метод getUserId
-            statement.setLong(12, dragon.getId());
+            statement.setLong(9, dragon.getId());
 
             statement.executeUpdate();
 
@@ -120,10 +118,7 @@ public class WorkDataBase {
                 String password = resultSet.getString("password");
                 String salt = resultSet.getString("salt");
                 CollectionManager.user_id_max=max(CollectionManager.user_id_max,id);
-                // Создание объекта Users
                 Users user = new Users(name, password, id, salt);
-
-                // Добавление объекта Users в список
                 CollectionManager.users.add(user);
             }
         } catch (Exception e) {
@@ -133,7 +128,7 @@ public class WorkDataBase {
     }
     public void getAllDragons() {
 
-        String query = "SELECT * FROM city";
+        String query = "SELECT * FROM dragons";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
@@ -149,14 +144,12 @@ public class WorkDataBase {
                 String type = resultSet.getString("type");
                 String character = resultSet.getString("character");
                 Float size = resultSet.getFloat("head");
-                Integer user_id = resultSet.getInt("users_id");
-                // Преобразование строки coordinates в объект Coordinates
                 Coordinates coordinates = convertStringToCoordinates(coordinatesString);
 
                 DragonHead head = new DragonHead(size);
                 DragonType dragonType = DragonType.valueOf(type);
                 DragonCharacter dragonCharacter = DragonCharacter.valueOf(character);
-                Dragon dragon = new Dragon(id, name, coordinates, creationDate, age, weight, dragonType, dragonCharacter, head, user_id);
+                Dragon dragon = new Dragon(id, name, coordinates, creationDate, age, weight, dragonType, dragonCharacter, head);
                 CollectionManager.dragon_id_max=max(CollectionManager.dragon_id_max,id);
                 // Добавление объекта City в список
                 CollectionManager.dragons.add(dragon);
