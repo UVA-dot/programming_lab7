@@ -86,44 +86,66 @@ public class Controller {
         CollectionManager.command = command;
 
         String str;
-        switch (command) {
-            case "info","help","exit","show","clear","head","remove_head","max_by_weight", "history", "group_by":
-                if (words.length==1){
-                    str= (commandManager.getCommand(command).execute(command));
-                }else {
-                    System.out.println("Данная команда вводится без аргумента");
-                    run();
-                }
+        if(authoriz == true){
+            switch (command) {
+                case "info", "help", "exit", "show", "clear", "head", "remove_head", "max_by_weight", "history", "group_by":
+                    if (words.length == 1) {
+                        str = (commandManager.getCommand(command).execute(command));
+                    } else {
+                        System.out.println("Данная команда вводится без аргумента");
+                        run();
+                    }
 
-                break;
-            case "filter","remove_by_id","update_id":
-                if (words.length==2) {
+                    break;
+                case "filter", "remove_by_id", "update_id":
+                    if (words.length == 2) {
+                        str = (commandManager.getCommand(command).execute(line));
+                    } else if (words.length == 1) {
+                        System.out.println("Данная команда вводится с аргументом");
+                        run();
+                    } else {
+                        System.out.println("Данная команда вводится с одним аргументом");
+                        run();
+                    }
+                    break;
+                case "add":
+                    if (words.length == 1) {
+                        str = (commandManager.getCommand(command).execute(command));
+                    } else {
+                        System.out.println("Данная команда вводится без аргумента");
+                        run();
+                    }
+
+                    break;
+
+                case "execute_script":
                     str = (commandManager.getCommand(command).execute(line));
-                } else if (words.length==1) {
-                    System.out.println("Данная команда вводится с аргументом");
+                    break;
+                default:
+                    System.out.println(new IllegalArgumentException("Неизвестная команда: " + command));
                     run();
-                }else{
-                    System.out.println("Данная команда вводится с одним аргументом");
-                    run();
-                }
-                break;
-            case "add":
-                if (words.length==1){
-                    str= (commandManager.getCommand(command).execute(command));
-                }else {
-                    System.out.println("Данная команда вводится без аргумента");
-                    run();
-                }
+                    break;
+            }
+        }
+        else{
+            switch (command) {
+                case "authorization", "reg_in":
+                    if (words.length == 1) {
+                        str = (commandManager.getCommand(command).execute(command));
+                        if(str == "Приветствуем вас, спасибо,что выбираете нас" || str == "Пользователь добавлен"){
+                            authoriz = true;
+                        }
+                    } else {
+                        System.out.println("Данная команда вводится без аргумента");
+                        run();
+                    }
 
-                break;
-
-            case "execute_script":
-                str = (commandManager.getCommand(command).execute(line));
-                break;
-            default:
-                System.out.println(new IllegalArgumentException("Неизвестная команда: " + command));
-                run();
-                break;
+                    break;
+                default:
+                    System.out.println(new IllegalArgumentException("Неизвестная команда: " + command+". Авторизируйтесь используя команду log_in или зарегистрируйтесь, используя reg_in"));
+                    run();
+                    break;
+            }
         }
     }
 }

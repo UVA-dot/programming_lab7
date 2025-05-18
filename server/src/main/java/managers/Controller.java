@@ -13,15 +13,15 @@ public class Controller {
 
                 return (commandManager.getCommand(command).execute(command, dragon, null, null, id));
 
-            case "remove_by_id", "update_id":
+            case "remove_by_id", "update_id", "filter":
                 return (commandManager.getCommand(command).execute(command, dragon, null, null, id));
 
             case "add":
 
                 return (commandManager.getCommand(command).execute(command, dragon, null, null, id));
 
-            case "filter":
-                return (commandManager.getCommand(command).execute(line, dragon, password, user, null));
+            case "reg_in","authorization":
+                return (commandManager.getCommand(command).execute(line,dragon,password,user,null));
             case "execute_script":
 //                System.out.println(control.getCommand(command).execution(line,null));
                 break;

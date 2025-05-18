@@ -30,6 +30,7 @@ public class Main {
                     oos.writeObject(CollectionManager.request);
                     oos.flush();
                     byte[] requestBytes = baos.toByteArray();
+                    while(!channel.finishConnect()){}
                     ByteBuffer requestBuffer = ByteBuffer.wrap(requestBytes);
                     channel.write(requestBuffer);
 

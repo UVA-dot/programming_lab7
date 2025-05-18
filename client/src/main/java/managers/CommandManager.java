@@ -29,6 +29,9 @@ public class CommandManager implements Commandable<Command> {
         commands.put("EXECUTE_SCRIPT", new Execute_script());
         commands.put("FILTER", new Filter_less_than_character());
         commands.put("UPDATE_ID", new Update_id());
+        commands.put("REG_IN", new RegIn());
+        commands.put("OUT", new Out());
+        commands.put("AUTHORIZATION", new Authorization());
     }
     @Override
     public HashMap<String, Command> getCommands(){

@@ -95,7 +95,7 @@ public class CollectionManager implements Collectionable {
                 flag = true;
             }
         } while (flag == false);
-        request = new CommandRequest("log_in",name,password);
+        request = new CommandRequest("authorization",name,password);
         return "Пользователь в поиске";
     }
     public String out(){
